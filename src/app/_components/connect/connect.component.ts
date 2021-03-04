@@ -39,6 +39,7 @@ export enum ConnectionMethod {
   KEYSTORE        = 'KEYSTORE',
   KEYSTORE_CREATE = 'KEYSTORE_CREATE',
   WALLET_CONNECT  = 'WALLET_CONNECT',
+  PIONEER         = 'PIONEER',
 }
 
 @Component({
@@ -91,6 +92,10 @@ export class ConnectModal implements OnDestroy {
 
   connectLedger() {
     this.connectionMethod = ConnectionMethod.LEDGER;
+  }
+
+  connectPioneer() {
+    this.connectionMethod = ConnectionMethod.PIONEER;
   }
 
   clearConnectionMethod() {

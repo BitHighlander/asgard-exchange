@@ -29,7 +29,7 @@
 
         <!-- Connect Options -->
 
-        <!-- <button class="connect-option" (click)="connectWalletConnect()" [disabled]="true">
+        <button class="connect-option" (click)="connectWalletConnect()" [disabled]="true">
           <img class="connect-option__logo" src="assets/images/wallet-connect-icon.svg" />
           <span>Wallet Connect</span>
         </button>
@@ -37,7 +37,12 @@
         <button class="connect-option" (click)="connectLedger()" [disabled]="true">
           <img id="ledger-logo" class="connect-option__logo" src="assets/images/ledger/ledger-logo.png" />
           <span>Ledger</span>
-        </button> -->
+        </button>
+
+        <button class="connect-option" (click)="connectPioneer()" [disabled]="false">
+          <img id="pioneer-logo" class="connect-option__logo" src="assets/images/pioneer.png" />
+          <span>Pioneer</span>
+        </button>
 
         <button class="connect-option" (click)="createKeystore()">
           <mat-icon class="connect-option__logo">add</mat-icon>
@@ -66,6 +71,10 @@
 
   <!-- KEYSTORE CONNECT -->
   <app-keystore-connect *ngIf="connectionMethod == 'KEYSTORE'" (back)="clearConnectionMethod()" (closeModal)="close()"></app-keystore-connect>
+
+  <!-- PIONEER CONNECT -->
+  <app-pioneer *ngIf="connectionMethod == 'PIONEER'" (back)="clearConnectionMethod()" (closeModal)="close()"></app-pioneer>
+
 
   <!-- <app-connect-error *ngIf="error" (back)="clearConnectionMethod()"></app-connect-error> -->
 

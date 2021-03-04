@@ -13,6 +13,7 @@ import { HeaderComponent } from './_components/header/header.component';
 import { KeystoreConnectComponent } from './_components/connect/keystore-connect/keystore-connect.component';
 import { LastBlockIndicatorComponent } from './_components/last-block-indicator/last-block-indicator.component';
 import { KeystoreCreateComponent } from './_components/connect/keystore-create/keystore-create.component';
+import { PioneerComponent } from './_components/connect/pioneer/pioneer.component';
 import { PendingTxsModalComponent } from './_components/user-settings/user-settings-dialog/pending-txs/pending-txs-modal.component';
 import { UserAddressComponent } from './_components/user-settings/user-settings-dialog/user-address/user-address.component';
 import { UserSettingsComponent } from './_components/user-settings/user-settings.component';
@@ -82,6 +83,7 @@ import { ThorchainPricesService } from './_services/thorchain-prices.service';
     ConnectErrorComponent,
     LastBlockIndicatorComponent,
     KeystoreCreateComponent,
+    PioneerComponent,
     UserSettingsComponent,
     UserSettingsDialogComponent,
     PendingTxsModalComponent,
