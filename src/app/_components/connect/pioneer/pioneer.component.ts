@@ -30,7 +30,7 @@ export type Keystore = {
   styleUrls: ['./pioneer.component.scss']
 })
 export class PioneerComponent implements OnInit {
-
+  pairingCode: string;
   keystorePassword: string;
   keystoreFile: File;
   keystoreFileSelected: boolean;
@@ -46,6 +46,8 @@ export class PioneerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('Get Pairing Code');
+    this.pairingCode = 'UHS723';
   }
 
   clearKeystore() {

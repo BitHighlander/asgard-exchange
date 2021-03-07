@@ -11,38 +11,10 @@
   <div class="dialog-content">
     <div mat-dialog-content>
 
-      Enter Pairing Code
+      Pioneer Pairing Code:
 
-<!--      <input #keystoreInput hidden="true" type="file" onclick="this.value=null" (change)="onKeystoreFileChange($event)" />-->
-<!--      <button class="uni-input uni-input&#45;&#45;file" (click)="keystoreInput.click()">-->
-<!--        <span>Connect Keystore File</span>-->
-<!--        <mat-icon *ngIf="!keystoreFileSelected">vpn_key</mat-icon>-->
-<!--        <mat-icon *ngIf="keystoreFileSelected" [ngStyle]="{'color':'green'}">check</mat-icon>-->
-<!--      </button>-->
+      <h1>{{pairingCode}}</h1>
 
-
-<!--      <div class="uni-input">-->
-<!--        <label>Password</label>-->
-<!--        <input [(ngModel)]="keystorePassword" name="keystore-password" placeholder="Please Enter Password" type="password" (keyup.enter)="initUnlock()" />-->
-<!--      </div>-->
-
-<!--      <small>Your file is not uploaded anywhere and remains password protected.</small>-->
-<!--      <br />-->
-
-<!--    </div>-->
-
-<!--    <div class="flxr flxr&#45;&#45;just-space-between flxr&#45;&#45;align-center" style="height: 38px">-->
-<!--      <div>-->
-<!--        <span *ngIf="keystoreError" style="font-size: 0.8rem; color: #2172e5">Keystore Login Incorrect</span>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <button *ngIf="!keystoreConnecting" mat-flat-button color="accent" (click)="initUnlock()" [disabled]="keystoreConnecting">-->
-<!--          <span>Unlock</span>-->
-<!--        </button>-->
-<!--        <mat-progress-spinner mode="indeterminate" diameter="30" *ngIf="keystoreConnecting"></mat-progress-spinner>-->
-
-<!--      </div>-->
-<!--    </div>-->
 
   </div>
 
