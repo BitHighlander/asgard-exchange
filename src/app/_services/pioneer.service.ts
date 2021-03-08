@@ -26,6 +26,7 @@ export class PioneerService {
     await app.init();
 
     const userParams = await app.getUserParams();
+    console.log('userParams: ', userParams);
 
     return new User(userParams);
   }

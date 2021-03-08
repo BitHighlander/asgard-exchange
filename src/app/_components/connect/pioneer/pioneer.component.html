@@ -15,9 +15,11 @@
 
       <h1>{{pairingCode}}</h1>
 
+      <button *ngIf="!loading" mat-flat-button color="primary" (click)="onPair()" [disabled]="loading">
+        <span>Pair Platform</span>
+      </button>
+    </div>
 
   </div>
 
 </div>
-
-
