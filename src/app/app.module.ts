@@ -41,6 +41,7 @@ import { UserService } from './_services/user.service';
 import { TransactionStatusService } from './_services/transaction-status.service';
 import { WalletConnectService } from './_services/wallet-connect.service';
 import { KeystoreService } from './_services/keystore.service';
+import { PioneerService } from './_services/pioneer.service';
 import { SlippageToleranceService } from './_services/slippage-tolerance.service';
 import { CoinGeckoService } from './_services/coin-gecko.service';
 import { CopyService } from './_services/copy.service';
@@ -130,6 +131,7 @@ import { ThorchainPricesService } from './_services/thorchain-prices.service';
     CoinGeckoService,
     CopyService,
     KeystoreService,
+    PioneerService,
     UserService,
     MidgardService,
     LastBlockService,

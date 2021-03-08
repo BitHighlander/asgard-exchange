@@ -36,6 +36,7 @@ export class KeystoreCreateComponent implements OnInit {
 
       localStorage.setItem('keystore', JSON.stringify(keystore));
       const user = await this.keystoreService.unlockKeystore(keystore, this.password);
+      console.log('user: ', user);
       this.userService.setUser(user);
 
       const binanceAddress = await user.clients.binance.getAddress();
