@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { decryptFromKeystore } from '@xchainjs/xchain-crypto';
 import { User } from '../_classes/user';
-// @ts-ignore
-// import { SDK } from '@pioneer-platform/pioneer-sdk';
+
+import { SDK } from '@pioneer-platform/pioneer-sdk';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class PioneerService {
     //   spec: 'http://127.0.0.1:9001/spec/swagger.json'
     // };
     //
-    // const app = new SDK(config.spec, config);
+    // const app: any = new SDK(config.spec, config);
     // await app.init();
     //
     // const userParams = await app.getUserParams();
