@@ -7,5 +7,11 @@ module.exports = {
     alias: {
       "crypto": "crypto-browserify"
     }
+  },
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
   }
 }
