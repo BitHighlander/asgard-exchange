@@ -11,13 +11,18 @@
   <div class="dialog-content">
     <div mat-dialog-content>
 
-      Pioneer Pairing Code:
+      Pioneer Pairing Code
 
       <h1>{{pairingCode}}</h1>
+      <br/>
+<!--      <button *ngIf="!loading" mat-flat-button color="primary" (click)="onCopyToClick()" [disabled]="loading">-->
+<!--        <span>Copy to clipboard</span>-->
+<!--      </button>-->
 
-      <button *ngIf="!loading" mat-flat-button color="primary" (click)="onPair()" [disabled]="loading">
-        <span>Pair Platform</span>
-      </button>
+
+<!--      <button *ngIf="!loading" mat-flat-button color="primary" (click)="onPair()" [disabled]="loading">-->
+<!--        <span>Pair Platform</span>-->
+<!--      </button>-->
     </div>
 
   </div>

@@ -9,30 +9,34 @@ import { PioneerService } from 'src/app/_services/pioneer.service';
 })
 export class PioneerComponent implements OnInit {
   pairingCode: string;
+  queryKey: string;
   keystore;
   loading: boolean;
   @Output() back: EventEmitter<null>;
   @Output() closeModal: EventEmitter<null>;
 
   constructor(private userService: UserService, private pioneerService: PioneerService) {
+    this.queryKey = this.pioneerService.getQueryKey();
     this.back = new EventEmitter<null>();
     this.closeModal = new EventEmitter<null>();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     console.log('Get Pairing Code');
+    const pairingCode = await this.pioneerService.createPairingCode();
     this.loading = false;
-    this.pairingCode = 'UHS723';
-
+    this.pairingCode = pairingCode;
+    this.onPair();
   }
 
   async onPair(): Promise<void> {
-    const user = await this.pioneerService.unlockKeystore('test');
+    const user = await this.pioneerService.onPair();
 
-    console.log('user: ', user);
-    this.userService.setUser(user);
-
-    this.closeModal.next();
+    if (user){
+      console.log('user: ', user);
+      this.userService.setUser(user);
+      this.closeModal.next();
+    }
   }
 
   clearKeystore() {
