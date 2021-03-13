@@ -14,7 +14,11 @@ module.exports = (config) => {
   };
   config.node = {
     vm: true,
-    stream: true
+    stream: true,
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
   };
   return config
 };
