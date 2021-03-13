@@ -216,7 +216,9 @@ export class DepositComponent implements OnInit, OnDestroy {
         .filter( (pool) => pool.asset.chain === 'BNB'
           || pool.asset.chain === 'THOR'
           || pool.asset.chain === 'BTC'
-          || pool.asset.chain === 'ETH');
+          || pool.asset.chain === 'ETH'
+          || pool.asset.chain === 'LTC'
+          || pool.asset.chain === 'BCH');
       },
       (err) => console.error('error fetching pools:', err)
     );
@@ -280,6 +282,10 @@ export class DepositComponent implements OnInit, OnDestroy {
       }
 
     });
+  }
+
+  back(): void {
+    this.router.navigate(['/', 'pool']);
   }
 
   ngOnDestroy() {

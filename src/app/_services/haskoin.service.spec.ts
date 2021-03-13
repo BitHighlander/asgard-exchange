@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { EthUtilsService } from './eth-utils.service';
 
-describe('EthUtilsService', () => {
-  let service: EthUtilsService;
+import { HaskoinService } from './haskoin.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+describe('HaskoinService', () => {
+  let service: HaskoinService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [ HttpClientTestingModule ]
     });
-    service = TestBed.inject(EthUtilsService);
+    service = TestBed.inject(HaskoinService);
   });
 
   it('should be created', () => {
