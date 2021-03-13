@@ -7,6 +7,7 @@ import { LastBlockService } from 'src/app/_services/last-block.service';
 import { MidgardService } from 'src/app/_services/midgard.service';
 import { ReconnectDialogComponent } from './_components/reconnect-dialog/reconnect-dialog.component';
 import { environment } from 'src/environments/environment';
+import { PioneerService } from 'src/app/_services/pioneer.service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isTestnet = (environment.network === 'testnet');
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.pollLastBlock();
 
     const keystoreString = localStorage.getItem('keystore');
@@ -36,6 +37,15 @@ export class AppComponent implements OnInit, OnDestroy {
     if (keystore) {
       this.openReconnectDialog(keystore);
     }
+
+    // let pioneer = new PioneerService()
+    // //if queryKey service pioneer
+    // const pioneerConfig = localStorage.getItem('config');
+    // if (pioneerConfig) {
+    //   //init
+    //   const isSuccess = await pioneer.OnInit()
+    //   //if success
+    // }
   }
 
   openReconnectDialog(keystore) {

@@ -35,6 +35,7 @@ export class PioneerComponent implements OnInit {
     if (user){
       console.log('user: ', user);
       this.userService.setUser(user);
+      // this.userService.fetchBalances();
       this.closeModal.next();
     }
   }

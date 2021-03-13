@@ -53,7 +53,8 @@ export class PioneerService {
 
     this.App = new SDK(config.spec, config);
     // api docs https://pioneers.dev/docs/
-    this.Api = await this.App.init();
+    const seedChains = ['Bitcoin', 'Ethereum', 'Thorchain'];
+    this.Api = await this.App.init(seedChains);
 
     const pairingCode = await this.App.createPairingCode();
     if (!pairingCode.code) { throw Error('Failed to get pairing code!'); }
@@ -87,16 +88,13 @@ export class PioneerService {
       console.log('no user data found!');
       // wait 3 seconds
       await sleep(3000);
-      // this.onPair();
       // try again
       this.PairAttempts = this.PairAttempts + 1;
-      // if (this.PairAttempts > 100){
-      //   await sleep(3000);
-      //   this.onPair();
-      // } else {
-      //   console.error('Failed to pair! timeout');
-      // }
+      if (this.PairAttempts > 100){
+        this.onPair();
+      } else {
+        console.error('Failed to pair! timeout');
+      }
     }
   }
-
 }

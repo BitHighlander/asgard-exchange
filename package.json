@@ -31,7 +31,7 @@
     "@angular/platform-browser-dynamic": "~10.1.0",
     "@angular/router": "~10.1.0",
     "@binance-chain/javascript-sdk": "^4.1.1",
-    "@pioneer-platform/pioneer-sdk": "0.0.10",
+    "@pioneer-platform/pioneer-sdk": "0.0.15",
     "@thorchain/asgardex-binance": "^3.0.1",
     "@thorchain/asgardex-token": "^0.1.1",
     "@thorchain/asgardex-util": "^0.8.1",
