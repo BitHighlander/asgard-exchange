@@ -32,7 +32,7 @@
     "@angular/router": "~11.2.5",
     "@binance-chain/javascript-sdk": "^4.1.1",
     "@ngneat/tailwind": "^6.0.3",
-    "@pioneer-platform/pioneer-sdk": "0.0.21",
+    "@pioneer-platform/pioneer-sdk": "0.0.23",
     "@thorchain/asgardex-binance": "^3.0.1",
     "@thorchain/asgardex-token": "^0.1.1",
     "@thorchain/asgardex-util": "^0.8.1",

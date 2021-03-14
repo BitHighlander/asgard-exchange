@@ -48,7 +48,8 @@ export class PioneerService {
       network,
       queryKey: this.Config.queryKey,
       username: this.Config.username,
-      spec: 'https://pioneers.dev/spec/swagger.json'
+      // spec: 'https://pioneers.dev/spec/swagger.json'
+      spec: 'http://127.0.0.1:9001/spec/swagger.json'
     };
 
     this.App = new SDK(config.spec, config);
@@ -71,7 +72,8 @@ export class PioneerService {
       network,
       queryKey: this.Config.queryKey,
       username: this.Config.username,
-      spec: 'https://pioneers.dev/spec/swagger.json'
+      // spec: 'https://pioneers.dev/spec/swagger.json'
+      spec: 'http://127.0.0.1:9001/spec/swagger.json'
     };
 
     const app: any = new SDK(config.spec, config);
