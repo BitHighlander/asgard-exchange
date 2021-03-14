@@ -91,7 +91,7 @@ export class UserService {
 
         // ETH
         clientBalances = await client.getBalance();
-        console.log('clientBalances: ', JSON.stringify(clientBalances));
+        console.log('clientBalances: ETH: ', clientBalances[0].amount.amount().toString());
 
         const ethAddress = await client.getAddress();
         const assetsToQuery: {chain: Chain, ticker: string, symbol: string}[] = [];
