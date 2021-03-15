@@ -58,6 +58,181 @@ export class ConfimSendComponent implements OnInit, OnDestroy {
       this.submitKeystoreTransaction();
     }
 
+    if (this.user.type === 'pioneer') {
+      this.submitPioneerTransaction();
+    }
+
+  }
+
+  async submitPioneerTransaction() {
+
+    if (this.asset && this.asset.asset) {
+
+      if (this.asset.asset.chain === 'THOR') {
+
+        const client = this.user.clients.thorchain;
+        if (!client) {
+          console.error('no thorchain client found');
+          return;
+        }
+
+        try {
+          const fees = await client.getFees();
+          const amount = assetToBase(assetAmount(this.amount)).amount().toNumber();
+
+          console.log('transfer params: ', JSON.stringify({
+            amount: baseAmount(amount - fees.average.amount().toNumber()),
+            recipient: this.recipientAddress,
+          }));
+
+          const hash = await client.transfer({
+            amount: baseAmount(amount - fees.average.amount().toNumber()),
+            recipient: this.recipientAddress,
+          });
+          this.pushTxStatus(hash, this.asset.asset, true);
+          this.transactionSuccessful.next();
+        } catch (error) {
+          console.error('error making transfer: ', error);
+          this.error = error;
+          this.txState = TransactionConfirmationState.ERROR;
+        }
+
+      } else if (this.asset.asset.chain === 'BNB') {
+
+        const binanceClient = this.user.clients.binance;
+
+        try {
+          const hash = await binanceClient.transfer({
+            asset: this.asset.asset,
+            amount: assetToBase(assetAmount(this.amount)),
+            recipient: this.recipientAddress,
+          });
+          this.pushTxStatus(hash, this.asset.asset, false);
+          this.transactionSuccessful.next();
+        } catch (error) {
+          console.error('error making transfer: ', error);
+          this.error = error;
+          this.txState = TransactionConfirmationState.ERROR;
+        }
+
+      } else if (this.asset.asset.chain === 'BTC') {
+
+        const bitcoinClient = this.user.clients.bitcoin;
+
+        try {
+
+          const feeRates = await bitcoinClient.getFeeRates();
+          const fees = await bitcoinClient.getFees();
+          const toBase = assetToBase(assetAmount(this.amount));
+          const amount = toBase.amount().minus(fees.fast.amount());
+
+          const hash = await bitcoinClient.transfer({
+            amount: baseAmount(amount),
+            recipient: this.recipientAddress,
+            feeRate: feeRates.average
+          });
+          this.pushTxStatus(hash, this.asset.asset, false);
+          this.transactionSuccessful.next();
+        } catch (error) {
+          console.error('error making transfer: ', error);
+          this.error = error;
+          this.txState = TransactionConfirmationState.ERROR;
+        }
+
+      } else if (this.asset.asset.chain === 'BCH') {
+
+        const bchClient = this.user.clients.bitcoinCash;
+
+        try {
+          const feeRates = await bchClient.getFeeRates();
+          const fees = await bchClient.getFees();
+          const toBase = assetToBase(assetAmount(this.amount));
+          const amount = toBase.amount().minus(fees.fastest.amount());
+          const hash = await bchClient.transfer({
+            amount: baseAmount(amount),
+            recipient: this.recipientAddress,
+            feeRate: feeRates.average
+          });
+          this.pushTxStatus(hash, this.asset.asset, false);
+          this.transactionSuccessful.next();
+        } catch (error) {
+          console.error('error making transfer: ', error);
+          this.error = error;
+          this.txState = TransactionConfirmationState.ERROR;
+        }
+
+      } else if (this.asset.asset.chain === 'ETH') {
+
+        const ethClient = this.user.clients.ethereum;
+        const asset = this.asset.asset;
+        let decimal;
+        const wallet = ethClient.getWallet();
+
+        if (asset.symbol === 'ETH') {
+          decimal = ETH_DECIMAL;
+        } else {
+          const assetAddress = asset.symbol.slice(asset.ticker.length + 1);
+          const strip0x = assetAddress.substr(2);
+          const checkSummedAddress = ethers.utils.getAddress(strip0x);
+          const tokenContract = new ethers.Contract(checkSummedAddress, erc20ABI, wallet);
+          const decimals = await tokenContract.decimals();
+          decimal = decimals.toNumber();
+        }
+
+        try {
+          console.log('transfer params: ', JSON.stringify({
+            asset: {
+              chain: asset.chain,
+              symbol: asset.symbol,
+              ticker: asset.ticker
+            },
+            amount: assetToBase(assetAmount(this.amount, decimal)),
+            recipient: this.recipientAddress,
+          }));
+
+          const hash = await ethClient.transfer({
+            asset: {
+              chain: asset.chain,
+              symbol: asset.symbol,
+              ticker: asset.ticker
+            },
+            amount: assetToBase(assetAmount(this.amount, decimal)),
+            recipient: this.recipientAddress,
+          });
+          this.pushTxStatus(hash, this.asset.asset, false);
+          this.transactionSuccessful.next();
+        } catch (error) {
+          console.error('error making transfer: ', error);
+          this.error = error;
+          this.txState = TransactionConfirmationState.ERROR;
+        }
+
+      } else if (this.asset.asset.chain === 'LTC') {
+        const litecoinClient = this.user.clients.litecoin;
+
+        try {
+
+          const feeRates = await litecoinClient.getFeeRates();
+          const fees = await litecoinClient.getFees();
+          const toBase = assetToBase(assetAmount(this.amount));
+          const amount = toBase.amount().minus(fees.fast.amount());
+
+          const hash = await litecoinClient.transfer({
+            amount: baseAmount(amount),
+            recipient: this.recipientAddress,
+            feeRate: feeRates.average
+          });
+          this.pushTxStatus(hash, this.asset.asset, false);
+          this.transactionSuccessful.next();
+        } catch (error) {
+          console.error('error making transfer: ', error);
+          this.error = error;
+          this.txState = TransactionConfirmationState.ERROR;
+        }
+      }
+
+    }
+
   }
 
   async submitKeystoreTransaction() {

@@ -95,14 +95,14 @@
             </div>
           </div>
 
-          <div class="flex justify-end">
+          <div *ngIf="!hideSeedView" class="flex justify-end">
             <button mat-flat-button (click)="mode = 'VIEW_PHRASE'">
               <mat-icon>visibility</mat-icon>
               View Phrase
             </button>
-            <span class="w-2"></span>
-            <button (click)="disconnect()" mat-flat-button color="primary">Disconnect</button>
           </div>
+          <span class="w-2"></span>
+          <button (click)="disconnect()" mat-flat-button color="primary">Disconnect</button>
 
         </div>
 

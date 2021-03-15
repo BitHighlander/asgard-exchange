@@ -18,6 +18,7 @@ export class UserSettingsDialogComponent implements OnInit, OnDestroy {
 
   user: User;
   subs: Subscription[];
+  hideSeedView = false;
   binanceAddress: string;
   bitcoinAddress: string;
   thorAddress: string;
@@ -55,6 +56,11 @@ export class UserSettingsDialogComponent implements OnInit, OnDestroy {
           this.loading = true;
 
           this.user = user;
+
+          // if wallet type pioneer hide view seed
+          if (this.user.type === 'pioneer'){
+            this.hideSeedView = true;
+          }
 
           if (this.user.clients.binance) {
             this.binanceAddress = await this.user.clients.binance.getAddress();
