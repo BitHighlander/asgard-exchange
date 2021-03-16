@@ -117,6 +117,8 @@ export class ConfirmSwapModalComponent implements OnInit, OnDestroy {
 
               if (this.swapData.user.type === 'keystore' || this.swapData.user.type === 'ledger') {
                 this.keystoreTransfer(matchingPool);
+              } else if (this.swapData.user.type === 'pioneer'){
+                this.pioneerTransfer(matchingPool);
               } else {
                 console.log('no error type matches');
               }
@@ -134,6 +136,175 @@ export class ConfirmSwapModalComponent implements OnInit, OnDestroy {
 
     } else { // RUNE is source asset
       this.keystoreTransfer();
+    }
+
+  }
+
+  async pioneerTransfer(matchingPool?: PoolAddressDTO) {
+
+    const amountNumber = this.swapData.inputValue;
+    const binanceClient = this.swapData.user.clients.binance;
+    const bitcoinClient = this.swapData.user.clients.bitcoin;
+    const thorClient = this.swapData.user.clients.thorchain;
+    const ethClient = this.swapData.user.clients.ethereum;
+    const litecoinClient = this.swapData.user.clients.litecoin;
+
+    const targetAddress = await this.userService.getTokenAddress(this.swapData.user, this.swapData.targetAsset.chain);
+
+    const floor = this.slipLimitService.getSlipLimitFromAmount(this.swapData.outputValue);
+
+    const memo = this.getSwapMemo(
+      this.swapData.targetAsset.chain,
+      this.swapData.targetAsset.symbol,
+      targetAddress,
+      Math.floor(floor.toNumber())
+    );
+
+    if (this.swapData.sourceAsset.chain === 'THOR') {
+
+      try {
+        const hash = await thorClient.deposit({
+          amount: assetToBase(assetAmount(amountNumber)),
+          memo
+        });
+
+        this.hash = hash;
+        this.txStatusService.addTransaction({
+          chain: 'THOR',
+          hash: this.hash,
+          ticker: this.swapData.sourceAsset.ticker,
+          status: TxStatus.PENDING,
+          action: TxActions.SWAP,
+          isThorchainTx: true,
+          symbol: this.swapData.sourceAsset.symbol,
+        });
+        this.txState = TransactionConfirmationState.SUCCESS;
+      } catch (error) {
+        console.error('error making transfer: ', error);
+        this.error = error;
+        this.txState = TransactionConfirmationState.ERROR;
+      }
+
+    } else if (this.swapData.sourceAsset.chain === 'BNB') {
+
+      try {
+        const hash = await binanceClient.transfer({
+          asset: this.swapData.sourceAsset,
+          amount: assetToBase(assetAmount(amountNumber)),
+          recipient: matchingPool.address,
+          memo
+        });
+
+        this.hash = hash;
+        this.pushTxStatus(hash, this.swapData.sourceAsset);
+        this.txState = TransactionConfirmationState.SUCCESS;
+      } catch (error) {
+        console.error('error making transfer: ', error);
+        this.error = error;
+        this.txState = TransactionConfirmationState.ERROR;
+      }
+
+    } else if (this.swapData.sourceAsset.chain === 'BTC') {
+
+      try {
+
+        const fee = await bitcoinClient.getFeesWithMemo(memo);
+        const feeRates = await bitcoinClient.getFeeRates();
+        const toBase = assetToBase(assetAmount(amountNumber));
+        const amount = toBase.amount().minus(fee.fast.amount());
+
+        const hash = await bitcoinClient.transfer({
+          amount: baseAmount(amount),
+          recipient: matchingPool.address,
+          memo,
+          feeRate: feeRates.average
+        });
+
+        this.hash = hash;
+        this.pushTxStatus(hash, this.swapData.sourceAsset);
+        this.txState = TransactionConfirmationState.SUCCESS;
+      } catch (error) {
+        console.error('error making transfer: ', error);
+        this.error = error;
+        this.txState = TransactionConfirmationState.ERROR;
+      }
+
+    } else if (this.swapData.sourceAsset.chain === 'ETH') {
+
+      try {
+
+        const sourceAsset = this.swapData.sourceAsset;
+        const targetAsset = this.swapData.targetAsset;
+
+        // temporarily drops slip limit until mainnet
+        const ethMemo = `=:${targetAsset.chain}.${targetAsset.symbol}:${targetAddress}`;
+
+        const hash = await this.ethUtilsService.callDeposit({
+          inboundAddress: matchingPool,
+          asset: sourceAsset,
+          memo: ethMemo,
+          amount: amountNumber,
+          ethClient
+        });
+
+        this.hash = hash.substr(2);
+        this.pushTxStatus(hash, this.swapData.sourceAsset);
+        this.txState = TransactionConfirmationState.SUCCESS;
+      } catch (error) {
+        console.error('error making transfer: ', error);
+        this.error = error;
+        this.txState = TransactionConfirmationState.ERROR;
+      }
+
+    } else if (this.swapData.sourceAsset.chain === 'LTC') {
+
+      try {
+        const fee = await litecoinClient.getFeesWithMemo(memo);
+        const feeRates = await litecoinClient.getFeeRates();
+        const toBase = assetToBase(assetAmount(amountNumber));
+        const amount = toBase.amount().minus(fee.fast.amount());
+
+        const hash = await litecoinClient.transfer({
+          amount: baseAmount(amount),
+          recipient: matchingPool.address,
+          memo,
+          feeRate: feeRates.average
+        });
+
+        this.hash = hash;
+        this.pushTxStatus(hash, this.swapData.sourceAsset);
+        this.txState = TransactionConfirmationState.SUCCESS;
+      } catch (error) {
+        console.error('error making transfer: ', error);
+        this.error = error;
+        this.txState = TransactionConfirmationState.ERROR;
+      }
+
+    } else if (this.swapData.sourceAsset.chain === 'BCH') {
+
+      try {
+        const bchClient = this.swapData.user.clients.bitcoinCash;
+        const fee = await bchClient.getFeesWithMemo(memo);
+        const feeRates = await bchClient.getFeeRates();
+        const toBase = assetToBase(assetAmount(amountNumber));
+        const amount = toBase.amount().minus(fee.fast.amount());
+
+        const hash = await bchClient.transfer({
+          amount: baseAmount(amount),
+          recipient: matchingPool.address,
+          memo,
+          feeRate: feeRates.average
+        });
+
+        this.hash = hash;
+        this.pushTxStatus(hash, this.swapData.sourceAsset);
+        this.txState = TransactionConfirmationState.SUCCESS;
+      } catch (error) {
+        console.error('error making transfer: ', error);
+        this.error = error;
+        this.txState = TransactionConfirmationState.ERROR;
+      }
+
     }
 
   }

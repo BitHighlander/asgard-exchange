@@ -91,7 +91,6 @@ export class UserService {
 
         // ETH
         clientBalances = await client.getBalance();
-        console.log('clientBalances: ETH: ', clientBalances[0].amount.amount().toString());
 
         const ethAddress = await client.getAddress();
         const assetsToQuery: {chain: Chain, ticker: string, symbol: string}[] = [];
@@ -126,16 +125,12 @@ export class UserService {
           assetsToQuery.push(tokenAsset);
         }
 
-        console.log('assetsToQuery: ', assetsToQuery);
-
         const tokenBalances = await client.getBalance(ethAddress, assetsToQuery);
-        console.log('tokenBalances: ', tokenBalances);
         clientBalances.push(...tokenBalances);
 
       } else {
         const client = this._user.clients[key];
         clientBalances = await client.getBalance();
-        console.log('clientBalances: ', clientBalances);
       }
       balances = [...balances, ...clientBalances];
     }
